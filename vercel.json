@@ -2,16 +2,6 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "env": {
-    "VITE_API_BASE": "@vite_api_base"
-  },
-  "envPrefix": "VITE_",
-  "experimentalServices": {
-    "frontend": {
-      "root": "frontend",
-      "build": {
-        "src": "src",
-        "dist": "dist"
-      }
-    }
+    "VITE_API_BASE": ""
   }
 }
