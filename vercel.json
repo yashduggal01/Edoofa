@@ -3,5 +3,11 @@
   "outputDirectory": "frontend/dist",
   "env": {
     "VITE_API_BASE": ""
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
