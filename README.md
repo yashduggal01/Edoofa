@@ -1,4 +1,4 @@
-# GoComet British Auction RFQ System
+# British Auction RFQ System
 
 A full-stack RFQ reverse-auction application built for the GoComet assignment. It implements the required British auction flow, automatic bid-window extensions, supplier ranking, activity audit logs, and a polished procurement dashboard.
 
