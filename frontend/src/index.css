@@ -763,6 +763,16 @@ tbody tr:hover {
   background: #fff0ee;
 }
 
+.timer-label {
+  display: inline-block;
+  font-size: 0.6em;
+  font-weight: 400;
+  margin-left: 8px;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .timer-meta {
   display: flex;
   flex-wrap: wrap;

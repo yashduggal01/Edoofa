@@ -18,7 +18,7 @@ function pad(value) {
   return String(value).padStart(2, '0');
 }
 
-export default function CountdownTimer({ closeTime, forcedCloseTime, status, phase }) {
+export default function CountdownTimer({ closeTime, forcedCloseTime, status, phase, startTime }) {
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -26,9 +26,11 @@ export default function CountdownTimer({ closeTime, forcedCloseTime, status, pha
     return () => clearInterval(id);
   }, []);
 
+  const diffToStart = getDiff(startTime, now);
   const diff = getDiff(closeTime, now);
   const state = phase || status;
   const isLive = state === 'LIVE' || (!phase && status === 'ACTIVE');
+  const isScheduled = state === 'SCHEDULED' && diffToStart;
   const urgent = diff && diff.total <= 300;
   const progress = useMemo(() => {
     const close = new Date(closeTime).getTime();
@@ -50,6 +52,15 @@ export default function CountdownTimer({ closeTime, forcedCloseTime, status, pha
           <strong>{pad(diff.minutes)}</strong>
           <span>:</span>
           <strong>{pad(diff.seconds)}</strong>
+        </div>
+      ) : isScheduled ? (
+        <div className="timer-digits" aria-label="Time until start">
+          <strong>{pad(diffToStart.hours)}</strong>
+          <span>:</span>
+          <strong>{pad(diffToStart.minutes)}</strong>
+          <span>:</span>
+          <strong>{pad(diffToStart.seconds)}</strong>
+          <span className="timer-label"> until start</span>
         </div>
       ) : (
         <div className="timer-closed">{state === 'SCHEDULED' ? 'Scheduled' : 'Closed'}</div>

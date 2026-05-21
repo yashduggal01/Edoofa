@@ -114,6 +114,7 @@ export default function DetailsPage() {
       </section>
 
       <CountdownTimer
+        startTime={rfq.bid_start_time}
         closeTime={rfq.current_close_time}
         forcedCloseTime={rfq.forced_close_time}
         status={rfq.status}

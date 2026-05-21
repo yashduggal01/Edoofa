@@ -6,13 +6,29 @@ function asNumber(value, fallback = 0) {
 }
 
 function minutesBetween(from, to) {
-  return Math.round((new Date(to).getTime() - new Date(from).getTime()) / 60000);
+  const fromDate = from instanceof Date ? from : parseDbDateTime(from);
+  const toDate = to instanceof Date ? to : parseDbDateTime(to);
+  return Math.round((toDate.getTime() - fromDate.getTime()) / 60000);
+}
+
+function parseDbDateTime(dateStr) {
+  if (!dateStr) return new Date(0);
+  // Handle format: "YYYY-MM-DD HH:MM:SS"
+  // Parse as local time, not UTC
+  const parts = dateStr.split(' ');
+  if (parts.length !== 2) return new Date(dateStr);
+  
+  const [datePart, timePart] = parts;
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hours, minutes, seconds] = timePart.split(':').map(Number);
+  
+  return new Date(year, month - 1, day, hours, minutes, seconds);
 }
 
 function getAuctionPhase(rfq, now = new Date()) {
-  const start = new Date(rfq.bid_start_time);
-  const close = new Date(rfq.current_close_time);
-  const forced = new Date(rfq.forced_close_time);
+  const start = parseDbDateTime(rfq.bid_start_time);
+  const close = parseDbDateTime(rfq.current_close_time);
+  const forced = parseDbDateTime(rfq.forced_close_time);
 
   if (now >= forced) return 'FORCE_CLOSED';
   if (now > close) return 'CLOSED';
@@ -116,8 +132,8 @@ function simulateBid(rfq, bids, price, options = {}, now = new Date()) {
   const candidateRank = ranked.find((bid) => bid.simulated);
   const validLowerBid = currentLowest === null || asNumber(price) < currentLowest;
   const bidTime = now.getTime();
-  const closeTime = new Date(rfq.current_close_time).getTime();
-  const forcedCloseTime = new Date(rfq.forced_close_time).getTime();
+  const closeTime = parseDbDateTime(rfq.current_close_time).getTime();
+  const forcedCloseTime = parseDbDateTime(rfq.forced_close_time).getTime();
   const windowStart = closeTime - asNumber(rfq.trigger_window, 5) * 60 * 1000;
 
   let triggerMatched = false;
