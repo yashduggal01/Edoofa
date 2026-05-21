@@ -2,7 +2,7 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "env": {
-    "VITE_API_BASE": ""
+    "VITE_API_BASE": "https://edoofa.onrender.com/api"
   },
   "rewrites": [
     {
