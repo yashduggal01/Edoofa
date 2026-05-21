@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
+const BASE = import.meta.env.VITE_API_BASE || 'https://edoofa.onrender.com/api';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
